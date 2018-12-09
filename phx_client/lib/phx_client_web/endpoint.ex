@@ -13,8 +13,8 @@ defmodule PhxClientWeb.Endpoint do
   plug(Plug.Static,
     at: "/",
     from: :phx_client,
-    gzip: false,
-    only: ~w(css fonts images js robots.txt),
+    gzip: true,
+    only: ~w(css fonts images js robots.txt .well-known),
     only_matching: ~w(favicon manifest)
   )
 
