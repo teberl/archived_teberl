@@ -1,0 +1,12 @@
+<main role="main" class="inner cover text-center">
+    <h1 class="cover-heading">Passionate about Software</h1>
+    <p class="lead">
+        since September 2017 working with a great team at Check24<br>
+        JavaScript / C# developer by day ⚛ Elixir and Reason fanboy by night
+    </p>
+    <p class="lead">
+        <a href="<%= Routes.heartbeat_path(@conn, :index) %>" class="btn btn-lg btn-secondary">
+            Heartbeat
+        </a>
+    </p>
+</main>

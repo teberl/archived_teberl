@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="theme-color" content="#000000">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+        crossorigin="anonymous">
+    <!-- Custom styles -->
+    <link rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/app.css") %>">
+    <link rel="manifest" href="<%= Routes.static_path(@conn, "/manifest.json") %>">
+    <link rel="shortcut icon" href="<%= Routes.static_path(@conn, "/favicon.ico") %>" type="image/x-icon">
+
+    <title>teberl |> 2018</title>
+</head>
+
+<body>
+    <img src="/images/bg_small.jpg" data-src="/images/bg.jpg" class="lazyload bg" />
+    <div class="page-container">
+        <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+            <header class="masthead mb-auto">
+                <div class="inner">
+                    <h3 class="masthead-brand">Thomas |> Eberl</h3>
+                    <nav class="nav nav-masthead justify-content-center" aria-label="navigation">
+                        <a class="nav-link" href="https://github.com/teberl" target="_blank" rel="noopener" aria-label="github">
+                            <i class="icon-github"></i>
+                        </a>
+                        <a class="nav-link" href="https://twitter.com/_teberl" target="_blank" rel="noopener" aria-label="twitter">
+                            <i class="icon-twitter"></i>
+                        </a>
+                        <a class="nav-link" href="https://stackoverflow.com/users/story/6817880" target="_blank" rel="noopener" aria-label="stackoverflow">
+                            <i class="icon-stackoverflow"></i>
+                        </a>
+                    </nav>
+                </div>
+            </header>
+
+            <%= render @view_module, @view_template, assigns %>
+
+            <footer class="mastfoot mt-auto">
+                <div class="inner text-center">
+                    <p>
+                        <strong>v. 0.1.0</strong> Munich 2018
+                    </p>
+                </div>
+            </footer>
+        </div>
+    </div>
+    <script type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
+</body>
+
+</html>

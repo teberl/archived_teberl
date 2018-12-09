@@ -1,0 +1,5 @@
+<main role="main" class="inner cover text-center">
+    <button type="button" class="btn btn-lg btn-warning">
+        Beats <span id="beats" class="badge badge-success">0</span>
+    </button>
+</main>
