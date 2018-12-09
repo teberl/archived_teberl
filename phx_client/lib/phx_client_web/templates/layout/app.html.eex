@@ -12,8 +12,8 @@
         crossorigin="anonymous">
     <!-- Custom styles -->
     <link rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/app.css") %>">
-    <link rel="manifest" href="<%= Routes.static_path(@conn, "/manifest.json") %>">
-    <link rel="shortcut icon" href="<%= Routes.static_path(@conn, "/favicon.ico") %>" type="image/x-icon">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
 
     <title>teberl |> 2018</title>
 </head>
