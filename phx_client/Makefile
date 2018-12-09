@@ -15,7 +15,8 @@ build: ## Build the Docker image
 		-t ${DOCKER_USERNAME}/$(APP_NAME):$(APP_VSN)-$(BUILD) \
 		-t ${DOCKER_USERNAME}/$(APP_NAME):latest .
 
+## TODO this part is not running since the cert files from prod are missing
 run: ## Run the app in Docker
 	docker run --env-file docker.env \
 		--expose 4000 -p 4000:4000 \
-		--rm -it $(APP_NAME):latest
+		--rm -it ${DOCKER_USERNAME}/$(APP_NAME):latest

@@ -13,7 +13,11 @@ services:
       restart_policy:
         condition: on-failure
     ports:
-      - "80:4000"
+      - 80:4000
+      - 443:4001
+    volumes:
+      - /etc/letsencrypt/live/teberl.de/privkey.pem:/usr/share/letsencrypt/privkey.pem
+      - /etc/letsencrypt/live/teberl.de/fullchain.pem:/usr/share/letsencrypt/fullchain.pem
     env_file:
       - docker.env
     networks:
