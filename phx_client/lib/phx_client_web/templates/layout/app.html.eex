@@ -19,7 +19,7 @@
 </head>
 
 <body>
-    <img src="/images/bg_small.jpg" data-src="/images/bg.jpg" class="lazyload bg" />
+    <img src="/images/bg_small.jpg" data-src="/images/bg.jpg" class="lazyload bg" alt="background-image"/>
     <div class="page-container">
         <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
             <header class="masthead mb-auto">

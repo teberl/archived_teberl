@@ -4,6 +4,9 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+// TODO ADD ImageminPlugin atm it is not working in the docker container
+// const ImageminPlugin = require('imagemin-webpack-plugin').default;
+// const imageminMozjpeg = require('imagemin-mozjpeg');
 
 module.exports = (env, options) => ({
   optimization: {
@@ -36,6 +39,10 @@ module.exports = (env, options) => ({
   },
   plugins: [
     new MiniCssExtractPlugin({ filename: '../css/app.css' }),
-    new CopyWebpackPlugin([{ from: 'static/', to: '../' }])
+    new CopyWebpackPlugin([{ from: 'static/', to: '../' }]),
+    // new ImageminPlugin({
+    //   pngquant: ({ quality: '50' }),
+    //   plugins: [imageminMozjpeg({ quality: '50' })]
+    // })
   ]
 });

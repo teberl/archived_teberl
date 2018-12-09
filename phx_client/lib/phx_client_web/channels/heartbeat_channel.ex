@@ -3,7 +3,7 @@ defmodule PhxClientWeb.HeartbeatChannel do
 
   def join("heartbeat:listen", payload, socket) do
     if authorized?(payload) do
-      send(self, :after_join)
+      send(self(), :after_join)
       {:ok, socket}
     else
       {:error, %{reason: "unauthorized"}}
@@ -11,13 +11,13 @@ defmodule PhxClientWeb.HeartbeatChannel do
   end
 
   def handle_info(:after_join, socket) do
-    send(self, {:beat, 0})
+    send(self(), {:beat, 0})
     {:noreply, socket}
   end
 
   def handle_info({:beat, i}, socket) do
     push(socket, "beat", %{body: i})
-    Process.send_after(self, {:beat, i + 1}, 1_000)
+    Process.send_after(self(), {:beat, i + 1}, 1_000)
     {:noreply, socket}
   end
 
