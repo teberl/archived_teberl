@@ -6,7 +6,7 @@ host = System.get_env("HOST") || "localhost"
 config :phx_client, PhxClientWeb.Endpoint,
   http: [:inet6, port: System.get_env("PORT") || 4000],
   url: [host: host, port: port],
-  check_origin: ["//localhost", "teberl.de"],
+  check_origin: ["//localhost", "//teberl.de"],
   cache_static_manifest: "priv/static/cache_manifest.json",
   server: true,
   root: ".",
