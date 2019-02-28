@@ -1,8 +1,10 @@
 # The version of Alpine to use for the final image
-# This should match the version of Alpine that the `elixir:1.7.4-alpine` image uses
-ARG ALPINE_VERSION=3.8
+# This should match the version of Alpine that the `erlang:21-alpine` image uses
+# https://hub.docker.com/_/erlang
+ARG ALPINE_VERSION=3.9
 
-FROM elixir:1.7.4-alpine AS builder
+# https://hub.docker.com/_/elixir
+FROM elixir:1.8.1-alpine AS builder
 
 # The following are build arguments usnodejs-current is 9ed to change variable parts of the image.
 # The name of your application/release (required)
