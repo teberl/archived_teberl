@@ -1,0 +1,15 @@
+<section class="main">
+    <span>
+    <input class="toggle-all"
+        type="checkbox"
+        readOnly
+    />
+    <label></label>
+    <ul class="todo-list">
+        <%= for todo <- @todos do %>
+        <%= render(PhxClientWeb.TodoAppView, "todo_item.html", todo: todo) %>
+        <% end %>
+    </ul>
+    </span>
+    <%= render(PhxClientWeb.TodoAppView, "footer.html", not_completed_count: @not_completed_count) %>
+</section>
