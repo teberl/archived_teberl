@@ -44,3 +44,8 @@ npm-debug.log
 
 # Elixir language server directory
 /.elixir_ls/
+
+# Custom
+/.elixir_ls/
+/file_storage/
+.vscode
