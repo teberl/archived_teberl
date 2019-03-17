@@ -42,6 +42,9 @@ defmodule PhxClientWeb do
       import PhxClientWeb.ErrorHelpers
       import PhxClientWeb.Gettext
       alias PhxClientWeb.Router.Helpers, as: Routes
+
+      # Import function from liveview
+      import Phoenix.LiveView, only: [live_render: 2, live_render: 3]
     end
   end
 
