@@ -57,12 +57,12 @@ defmodule TodoApp.List do
   @doc """
   Get returns a list of todos from an existing list
 
-  * get_entries/1 returns a list of todos from a todo_list
-  * get_entries/2 returns a list of all todos matching an id or a date
+  * get/1 returns a list of todos from a todo_list
+  * get/2 returns a list of all todos matching an id or a date
 
   ## Examples
     iex> todo_list = TodoApp.List.new() |> TodoApp.List.add(TodoApp.Entry.new(~D[1984-01-01], "Buy tomatoes."))
-    iex> todo_list |> List.get_entries
+    iex> todo_list |> List.get
     [
       %TodoApp.Entry{
         completed: false,
@@ -73,7 +73,7 @@ defmodule TodoApp.List do
     ]
 
     iex> todo_list = TodoApp.List.new() |> TodoApp.List.add(TodoApp.Entry.new(~D[1984-01-01], "Buy tomatoes."))
-    iex> todo_list |> List.get_entries(1)
+    iex> todo_list |> List.get(1)
     [
       %TodoApp.Entry{
         completed: false,
@@ -84,7 +84,7 @@ defmodule TodoApp.List do
     ]
 
     iex> todo_list = TodoApp.List.new() |> TodoApp.List.add(TodoApp.Entry.new(~D[1984-01-01], "Buy tomatoes."))
-    iex> todo_list |> List.get_entries(~D[1984-01-01])
+    iex> todo_list |> List.get(~D[1984-01-01])
     [
       %TodoApp.Entry{
         completed: false,
@@ -111,8 +111,32 @@ defmodule TodoApp.List do
     |> Enum.map(fn {_, todo} -> todo end)
   end
 
-  def delete_entry(%List{auto_id: auto_id, entries: todos}, id) when is_integer(id) do
+  def get_list(%List{auto_id: auto_id, entries: todos} = _todo_list, :active) do
+    ids_to_drop =
+      todos
+      |> Stream.filter(fn {_, todo} -> todo.completed == true end)
+      |> Enum.map(fn {id, _} -> id end)
+
+    new_todos = Map.drop(todos, ids_to_drop)
+
+    %List{auto_id: auto_id, entries: new_todos}
+  end
+
+  def delete(%List{auto_id: auto_id, entries: todos}, id) when is_integer(id) do
     new_todos = Map.delete(todos, id)
+
+    %List{auto_id: auto_id, entries: new_todos}
+  end
+
+  def delete(%List{auto_id: auto_id, entries: todos}, id) when is_integer(id) do
+    new_todos = Map.delete(todos, id)
+
+    %List{auto_id: auto_id, entries: new_todos}
+  end
+
+  def delete(%List{auto_id: auto_id, entries: todos}, [] = ids) do
+    new_todos = Map.drop(todos, ids)
+
     %List{auto_id: auto_id, entries: new_todos}
   end
 
@@ -123,8 +147,15 @@ defmodule TodoApp.List do
     %List{auto_id: auto_id, entries: new_todos}
   end
 
-  def get_not_completed_count(%List{entries: todos}) do
-    Enum.count(todos, fn {_key, value} -> !value.completed end)
+  def update(
+        %List{auto_id: auto_id, entries: todos} = list,
+        {id, new_title}
+      )
+      when is_integer(id) do
+    entry = get_entries(list, id)
+    new_entries = Map.update(todos, id, entry, &Entry.update_title(&1, new_title))
+
+    %List{auto_id: auto_id, entries: new_entries}
   end
 
   defimpl Collectable do

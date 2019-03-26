@@ -22,4 +22,8 @@ defmodule TodoApp.Entry do
   def toggle_complete(%Entry{} = entry) do
     Map.update(entry, :completed, entry.completed, &(!&1))
   end
+
+  def update_title(%Entry{} = entry, new_title) do
+    Map.update(entry, :title, entry.title, &(&1 = new_title))
+  end
 end

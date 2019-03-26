@@ -118,6 +118,6 @@ defmodule TodoApp.ListTest do
     }
 
     assert List.new(todos)
-           |> List.delete_entry(2) == expected_result
+           |> List.delete(2) == expected_result
   end
 end
