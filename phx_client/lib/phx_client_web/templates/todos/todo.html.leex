@@ -1,0 +1,34 @@
+<li class="<%= if @todo.completed, do: "completed" %> <%= if @edit == @todo.id, do: "editing" %>">
+    <%= if @edit == @todo.id do %>
+    <form phx-submit="todo_add">
+    <%= text_input(:todo, :title, 
+        class: "edit",
+        id: "todo_edit",
+        autofocus: true,
+        value: @todo.title,
+        "phx-blur": "todo_blur") 
+    %>
+    </form>
+    <% else %>
+    <div class="view" id="view">
+        <input
+            class="toggle"
+            type="checkbox"
+            phx-click="todo_toggle" 
+            phx-value="<%= @todo.id %>"
+            <%= if @todo.completed, do: "checked" %>
+        />
+        <label 
+            phx-click="todo_click"
+            phx-value="<%= @todo.id %>"
+        >
+        <%= @todo.title %>
+        </label>
+        <button 
+            class="destroy" 
+            phx-click="todo_delete" 
+            phx-value="<%= @todo.id %>" 
+        ></button>
+    </div>
+    <% end %>
+</li>

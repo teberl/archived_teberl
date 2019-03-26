@@ -17,7 +17,7 @@ module.exports = (env, options) => ({
   },
   entry: {
     app: ['./js/app.js'].concat(glob.sync('./vendor/**/*.js')),
-    todo_app: './js/todo_app.js'
+    todomvc_app: './js/todomvc_app.js'
   },
   output: {
     filename: '[name].js',

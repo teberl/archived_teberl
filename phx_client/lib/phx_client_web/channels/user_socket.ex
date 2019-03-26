@@ -3,7 +3,7 @@ defmodule PhxClientWeb.UserSocket do
 
   ## Channels
   # channel "room:*", PhxClientWeb.RoomChannel
-  channel "heartbeat:listen", PhxClientWeb.HeartbeatChannel
+  channel("heartbeat:listen", PhxClientWeb.HeartbeatChannel)
 
   # Socket params are passed from the client and can
   # be used to verify and authenticate a user. After

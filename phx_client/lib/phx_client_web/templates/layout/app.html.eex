@@ -15,7 +15,7 @@
     <link rel="manifest" href="/manifest.json">
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
 
-    <title>teberl |> 2018</title>
+    <title>teberl |> <%= get_year() %></title>
 </head>
 
 <body>
@@ -44,7 +44,7 @@
             <footer class="mastfoot mt-auto">
                 <div class="inner text-center">
                     <p>
-                        <strong>v. 0.1.0</strong> Munich 2018
+                        <strong>v. 0.2.0</strong> Munich <%= get_year() %>
                     </p>
                 </div>
             </footer>

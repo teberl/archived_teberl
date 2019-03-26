@@ -1,0 +1,10 @@
+<header class="header">
+    <h1>todos</h1>
+    <form phx-submit="header_add">
+    <%= text_input(:todo, :title, 
+        class: "new-todo", 
+        placeholder: "What needs to be done?", 
+        autoFocus: true) 
+    %>
+    </form>
+</header>

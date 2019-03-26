@@ -1,12 +1,13 @@
 <main role="main" class="inner cover text-center">
     <h1 class="cover-heading">Passionate about Software</h1>
+    <h1>and rock climbing</h1>
     <p class="lead">
-        since September 2017 working with a great team at Check24<br>
-        JavaScript / C# developer by day ⚛ Elixir and Reason fanboy by night
+        Since September 2017 a Professional Software Developer at Check24 (Unfall-Team) in Munich.<br>
+        There we develop JavaScript and C# in the backend and some ⚛React and knockout.js in the frontend.
     </p>
     <p class="lead">
-        <a href="<%= Routes.heartbeat_path(@conn, :index) %>" class="btn btn-lg btn-secondary">
-            Heartbeat
-        </a>
+        In my spare time i try to programm as much as possible in Elixir.<br>
+        If you haven't heard about it, you should definitely give it a try.<br>
     </p>
+    <p class="hint">Check your console for the site menu <br> ¯\_(ツ)_/¯</p>
 </main>

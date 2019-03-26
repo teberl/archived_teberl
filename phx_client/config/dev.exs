@@ -58,7 +58,8 @@ config :phx_client, PhxClientWeb.Endpoint,
       ~r{priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$},
       ~r{priv/gettext/.*(po)$},
       ~r{lib/phx_client_web/views/.*(ex)$},
-      ~r{lib/phx_client_web/templates/.*(eex)$}
+      ~r{lib/phx_client_web/templates/.*(eex)$},
+      ~r{lib/phx_client_web/live/.*(ex)$}
     ]
   ]
 

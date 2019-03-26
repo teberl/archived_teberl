@@ -1,0 +1,13 @@
+<footer class="footer">
+<span class="todo-count">
+    <%= raw(todo_count_text(@active_count)) %> left
+</span>
+<ul class="filters">
+    <%= for filter <- [:SHOW_ALL, :SHOW_ACTIVE, :SHOW_COMPLETED] do %>
+        <%= render("filter_link.html", %{filter: filter, active: filter == @session.filter}) %>
+    <% end %>
+</ul>
+<button phx-click="footer_clear_completed" class="clear-completed">
+    Clear completed
+</button>
+</footer>
