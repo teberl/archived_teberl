@@ -44,7 +44,7 @@
             <footer class="mastfoot mt-auto">
                 <div class="inner text-center">
                     <p>
-                        <strong>v. 0.2.0</strong> Munich <%= get_year() %>
+                        <strong>v0.2.0</strong> Munich <%= get_year() %>
                     </p>
                 </div>
             </footer>

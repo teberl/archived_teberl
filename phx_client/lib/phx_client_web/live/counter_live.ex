@@ -9,6 +9,10 @@ defmodule PhxClientWeb.CounterLive do
       <button phx-click="dec">-</button>
       <button phx-click="inc">+</button>
     </div>
+    <%=   %>
+    <div style="visibility: <%= get_visibility(@val) %>;">
+      <%= live_render(@socket, PhxClientWeb.ClockLive) %>
+    </div>
     """
   end
 
@@ -23,5 +27,12 @@ defmodule PhxClientWeb.CounterLive do
   def handle_event("dec", _, socket) do
     IO.inspect(socket)
     {:noreply, update(socket, :val, &(&1 - 1))}
+  end
+
+  defp get_visibility(val) do
+    case rem(val, 2) |> abs do
+      1 -> "hidden"
+      _ -> "visible"
+    end
   end
 end

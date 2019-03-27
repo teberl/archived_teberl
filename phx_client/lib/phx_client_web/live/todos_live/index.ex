@@ -65,7 +65,7 @@ defmodule PhxClientWeb.TodosLive.Index do
     {:noreply, assign(socket, %{edit: new_edit})}
   end
 
-  def handle_event("todo_blur", new_title, %{assigns: %{pid: pid, edit: update_id}} = socket) do
+  def handle_event("todo_blur", new_title, socket) do
     socket = save(socket, new_title)
     {:noreply, socket}
   end
@@ -100,14 +100,13 @@ defmodule PhxClientWeb.TodosLive.Index do
     |> TodoApp.Entry.new(title)
   end
 
-  defp save(%{assigns: %{pid: pid, filter: filter, edit: id}} = socket, new_title) do
+  defp save(%{assigns: %{pid: pid, edit: id}} = socket, new_title) do
     Server.update(pid, {id, new_title})
     new_todos = fetch(pid)
 
-    socket =
-      socket
-      |> update_todos(new_todos)
-      |> assign(%{edit: nil})
+    socket
+    |> update_todos(new_todos)
+    |> assign(%{edit: nil})
   end
 
   defp update_todos(%{assigns: %{filter: filter}} = socket, new_todos) do
