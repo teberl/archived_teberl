@@ -16,11 +16,9 @@ if (beats) {
 
 channel
   .join()
-  .receive('ok', resp => {
-    console.log('Joined successfully', resp);
-  })
+  .receive('ok', () => {})
   .receive('error', resp => {
-    console.log('Unable to join', resp);
+    console.error('Unable to join', resp);
   });
 
 export default socket;
