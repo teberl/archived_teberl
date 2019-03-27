@@ -1,47 +1,41 @@
-# Don't fear the release (Releases with Distillery2.0 and Docker)
+# Don't fear the release
+___Releases with Distillery 2.0 and Docker___
 
 ## Contents
 
-1. **Part I ~ OTP Release using distillery**
-   - mix phx.new
-   - some configuration
-   - initial release 0.1.0
-   - upgrade release 0.2.0
-   - upgrade release 0.3.0
-2. **Part II ~ Building a release inside docker**
-   - ..
-   - ..
-3. **Part III ~ On top**
+1. **[OTP Release using distillery](https://gist.github.com/teberl/f09976e24937e3a1ba066fe63ffd1637#otp-release-using-distillery)**
+    * Create a new phoenix project
+    * Building the first release
+    * Run your release
+    * Move the release anywhere
+    * Performing upgrades
+2. **[Building releases with docker](https://gist.github.com/teberl/f09976e24937e3a1ba066fe63ffd1637#building-a-release-inside-docker)**
+    * Multi-stage docker builds
+    * The `Dockerfile`
+    * Use `config_providers`
+3. **[Automating the build process](https://gist.github.com/teberl/f09976e24937e3a1ba066fe63ffd1637#automating-the-build-process)**
+     * Create a `Makefile`
+     * Using of docker-compose
+4. **[Ressources](https://gist.github.com/teberl/f09976e24937e3a1ba066fe63ffd1637#ressources)**
 
-- config-provider
-- Resoucres & Links
+## OTP Release using distillery
 
-## Part I ~ OTP Release using distillery
+### Create a new phoenix project
 
-### Prepare phoenix
-
-#### Create a new phoenix project
-
-```zsh
+```bash
 ➜ mix phx.new --no-ecto my_app
 ```
 
-#### Add dependencies `mix.exs`
+#### Add distillery
+
+`mix.exs`
 
 ```elixir
-def project do
-   [
-    ...
-    version: "0.2.0",
-    ...
-   ]
-end
-
 ...
 
 defp deps do
     [
-     ...,
+     ...,   
      {:distillery, "~> 2.0"}
     ]
   end
@@ -49,10 +43,10 @@ defp deps do
 
 #### Update `config/prod.exs`
 
-- `System.get_env(varname)` _Returns the value of the given environment variable_
-- `server` configures the endpoint to boot the Cowboy application http endpoint on start
-- `root` configures the application root for serving static files
-- `version` ensures that the asset cache will be busted on versioned application upgrades (hot-upgrades)
+* `System.get_env(varname)`  _Returns the value of the given environment variable_
+* `server` configures the endpoint to boot the Cowboy application http endpoint on start
+* `root` configures the application root for serving static files
+* `version` ensures that the asset cache will be busted on versioned application upgrades (hot-upgrades)
 
 ```elixir
 port = System.get_env("PORT") || 4000
@@ -73,11 +67,11 @@ config :phoenix_distillery, MyAppWeb.Endpoint,
 
 #### Fetching deps
 
-- fetch production dependencies from [hex](https://hex.pm)
-- initialize distillery which creates\
-  `rel/config.exs`
-- in addition to an empty directory\
-  `rel/plugins/`
+* fetch production dependencies from [hex](https://hex.pm)
+* initialize distillery which creates\
+`rel/config.exs`
+* in addition to an empty directory\
+`rel/plugins/`
 
 ```zsh
 ➜ mix deps.get --only prod
@@ -86,9 +80,9 @@ config :phoenix_distillery, MyAppWeb.Endpoint,
 
 #### Compile elixir and assets
 
-- `mix phx.digest` compress and tag your assets for proper caching
-- `mix release env=prod` generate a release for a production environment
-- _hint:_ combined mix tasks with `MIX_ENV=prod mix do phx.digest, release env=prod`
+* `mix phx.digest` compress and tag your assets for proper caching
+* `mix release env=prod` generate a release for a production environment
+* _hint:_ combined mix tasks with `MIX_ENV=prod mix do phx.digest, release env=prod`
 
 ```zsh
 ➜ MIX_ENV=prod mix compile
@@ -105,19 +99,21 @@ config :phoenix_distillery, MyAppWeb.Endpoint,
 ### Run the release
 
 ```zsh
+➜ _build/prod/rel/my_app/bin/my_app start
+➜ _build/prod/rel/my_app/bin/my_app stop
 ➜ _build/prod/rel/my_app/bin/my_app foreground
 ```
 
 ### Move the release anywhere
 
-- `cp _build/prod/rel/my_app/releases/0.0.1/my_app.tar.gz deployment_target/`\
-  Move the release anywhere by copying the release tarball
-- `cd deployment_target/ && tar xvf my_app.tar.gz`\
-  Extract the tarball at in the target location
-- `./bin/my_app start`
-- `./bin/my_app stop`
+* `cp _build/prod/rel/my_app/releases/0.0.1/my_app.tar.gz deployment_target/`\
+Move the release anywhere by copying the release tarball
+* `cd deployment_target/ && tar xvf my_app.tar.gz`\
+Extract the tarball at in the target location
+* `./bin/my_app start`
+* `./bin/my_app stop`
 
-### Performing an upgrade (Version 0.2.0)
+### Performing upgrades
 
 #### Bump the version in `mix.exs` and add new features
 
@@ -132,11 +128,11 @@ end
 
 #### Create a new **--upgrad** release
 
-- `MIX_ENV=prod mix release --env=prod --upgrade`\
-  tells Distillery to build an upgrade from the previously built releases in the output directory
-- If the upgrade build is not failing a new tarball is created\
-  `_build/prod/rel/phoenix_distillery/releases/0.2.0/my_app.tar.gz`
-- This tarball can deployed into an existing release, for example in the previous used deployment target
+* `MIX_ENV=prod mix release --env=prod --upgrade`\
+tells Distillery to build an upgrade from the previously built releases in the output directory 
+* If the upgrade build is not failing a new tarball is created\
+`_build/prod/rel/phoenix_distillery/releases/0.2.0/my_app.tar.gz`
+* This tarball can deployed into an existing release, for example in the previous used deployment target
 
 ```zsh
 ➜ MIX_ENV=prod mix compile
@@ -153,10 +149,10 @@ end
 ```
 
 > Don't forget to create a new release directory\
-> `mkdir deployment_target/release/0.2.0`
+`mkdir deployment_target/release/0.2.0`
 > Depending on your changes, you may have to reload your browser to see the changes
 
-## Part II ~ Building a release inside docker
+## Building a release inside docker
 
 ### Multi-stage docker builds
 
@@ -180,10 +176,10 @@ priv/static/
 
 ```Dockerfile
 #StageOne: Build Container
-FROM elixir:1.8.1-alpine AS builder
+FROM elixir:1.7.4-alpine AS builder
 
 # The following are build arguments used to change variable parts of the image.
-ARG ALPINE_VERSION=3.9
+ARG ALPINE_VERSION=3.8
 ARG APP_NAME
 ARG APP_VSN
 ARG MIX_ENV=prod
@@ -253,14 +249,16 @@ COPY --from=builder /opt/built .
 CMD trap 'exit' INT; /opt/app/bin/${APP_NAME} foreground
 ```
 
-#### mix config provider
+### Use config-providers
 
-> _Compiletime/Runtime variables_
->
-> - `http: [port: System.get_env("PORT")]`\
->   then you would need to provide the PORT environment variable at build time which is when that code would be executed.
-> - `{:system, "PORT"}`\
->   is not some magic code to retrieve an environment variable, it is a setting that tells Phoenix to retrieve the port number from the PORT environment variable at runtime
+Configuration providers for loading and persisting runtime configuration during boot.  
+
+> *Compiletime vs. Runtime variables*
+> 
+> * `http: [port: System.get_env("PORT")]`  
+> Here you would need to provide the PORT environment variable at build time which is when that code would be executed.
+> * `{:system, "PORT"}`  
+> This isn't some magic code to retrieve an environment variable, it is a setting that tells Phoenix to retrieve the port number from the PORT environment variable at runtime
 
 #### Create/Update `rel/config.exs`
 
@@ -270,6 +268,8 @@ release :myapp do
   set config_providers: [
     {Mix.Releases.Config.Providers.Elixir, ["${RELEASE_ROOT_DIR}/etc/config.exs"]}
   ]
+
+  # Overlays allow you to modify the contents of the release, you may add/symlink files, create directories, and generate files based on templates.
   set overlays: [
     {:copy, "rel/config/config.exs", "etc/config.exs"}
   ]
@@ -278,7 +278,7 @@ end
 
 #### Create/Update the referenced config file `rel/config/config.exs`
 
-> Use Compile time variables from our docker.env to replace with runtime variables from the original phoenix `my_app/config/config.exs`
+> Use Compile time variables from our docker.env to replace with runtime variables from the original phoenix `my_app/config/config.exs` 
 
 ```elixir
 use Mix.Config
@@ -298,12 +298,12 @@ config :myapp, MyApp.Endpoint,
   secret_key_base: System.get_env("SECRET_KEY_BASE")
 ```
 
-### Automating the build process
+## Automating the build process
 
-> To help automate building images, it is recommended to use a _Makefile_ or shell script.\
+> To help automate building images, it is recommended to use a *Makefile* or shell script.\
 > Run Makefiles with the `make` command in your project directory
 
-#### Add a `Makefile`
+### Create a `Makefile`
 
 ```Makefile
 .PHONY: help
@@ -335,7 +335,9 @@ run: ## Run the app in Docker
 
 `➜ make build`
 
-#### Add a `config/docker.env`
+### Using of docker-compose
+
+#### Create a `config/docker.env`
 
 > This variables will be exported as system env variables inside our running docker container
 
@@ -352,12 +354,12 @@ REPLACE_OS_VARS=true
 ERLANG_COOKIE=myapp
 ```
 
-#### Version I with `docker-compose up`
+#### `docker-compose up`
 
 `docker-compose.yml`
 
 ```yml
-version: "3.5"
+version: '3.5'
 
 services:
   web:
@@ -368,16 +370,15 @@ services:
       - config/docker.env
 ```
 
-#### Version II with _docker-swarm_
+#### `docker-swarm`
 
-- `docker swarm init`
-- `docker swarm init --advertise-addr <ip address of droplet> --listen-addr <ip address of droplet>`
-- `docker stack deploy -c docker-compose.yml myapp`
+* `docker swarm init --advertise-addr <ip address of droplet> --listen-addr <ip address of droplet>`
+* `docker stack deploy -c docker-compose.yml myapp`
 
 ```yml
-version: "3.5"
+version: '3.5'
 
-networks:
+networks: 
   webnet:
     driver: overlay
     attachable: true # enables running custom commands in the container
@@ -394,16 +395,12 @@ services:
       - webnet
 ```
 
-## Part III ~ On top
+## Ressources
 
-### more about config-providers
-
-<!-- TODO -->
-
-### Links && Credits
-
-[Distillery - github](https://github.com/bitwalker/distillery/)\
-[Distillery - Phoenix Walkthrough](https://hexdocs.pm/distillery/guides/phoenix_walkthrough.html)\
-(elixir-forum - Compiletime/Runtime variables)[https://elixirforum.com/t/what-is-the-difference-between-using-system-port-and-system-get-env-port-in-deployment/1975]\
-[Docker multi-stage builds](https://docs.docker.com/develop/develop-images/multistage-build/)\
-[Distillery - Working with Docker](https://hexdocs.pm/distillery/guides/working_with_docker.html)\
+### Link List
+[Distillery - github](https://github.com/bitwalker/distillery/)  
+[Distillery - Phoenix Walkthrough](https://hexdocs.pm/distillery/guides/phoenix_walkthrough.html)  
+[elixir-forum - Compiletime/Runtime variables](https://elixirforum.com/t/what-is-the-difference-between-using-system-port-and-system-get-env-port-in-deployment/1975)  
+[Docker multi-stage builds](https://docs.docker.com/develop/develop-images/multistage-build/)  
+[Distillery - Working with Docker](https://hexdocs.pm/distillery/guides/working_with_docker.html)  
+[Slides](https://docs.google.com/presentation/d/1wx4nmsqn_itfUdxienDa6bIeo8tF0xT4EuQsKnRy8Ug/edit?usp=sharing)
