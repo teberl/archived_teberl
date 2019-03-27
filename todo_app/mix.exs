@@ -22,7 +22,8 @@ defmodule TodoApp.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:poolboy, "~> 1.5"}
+      {:poolboy, "~> 1.5"},
+      {:jason, "~> 1.1"}
     ]
   end
 end
