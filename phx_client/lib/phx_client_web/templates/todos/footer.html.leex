@@ -4,7 +4,7 @@
 </span>
 <ul class="filters">
     <%= for filter <- [:SHOW_ALL, :SHOW_ACTIVE, :SHOW_COMPLETED] do %>
-        <%= render("filter_link.html", %{filter: filter, active: filter == @session.filter}) %>
+        <%= render("filter_link.html", %{filter: filter, active: filter == @session.filter, list_id: @session.list_id}) %>
     <% end %>
 </ul>
 <button phx-click="footer_clear_completed" class="clear-completed">

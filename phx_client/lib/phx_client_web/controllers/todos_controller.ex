@@ -6,32 +6,28 @@ defmodule PhxClientWeb.TodosController do
 
   @server "global"
 
-  plug(:put_layout, :todos)
-
-  def index(conn, _params) do
+  def global_list(conn, _params) do
     pid = Cache.server_process(@server)
 
     conn
     |> LiveView.Controller.live_render(PhxClientWeb.TodosLive.Index,
-      session: %{filter: :SHOW_ALL, pid: pid}
+      session: %{filter: :SHOW_ALL, pid: pid, list_id: @server }
     )
   end
 
-  def active(conn, _params) do
-    pid = Cache.server_process(@server)
+  def todo_list(conn, %{"list_id" => list_id} = params) do
+    pid = Cache.server_process(list_id)
+    filter = case Map.get(params, "filter", "all") do
+      "active" -> :SHOW_ACTIVE
+      "completed" -> :SHOW_COMPLETED
+      "all" -> :SHOW_ALL
+      _ -> :SHOW_ALL
+    end
 
     conn
     |> LiveView.Controller.live_render(PhxClientWeb.TodosLive.Index,
-      session: %{filter: :SHOW_ACTIVE, pid: pid}
+      session: %{filter: filter, list_id: list_id, pid: pid}
     )
   end
 
-  def completed(conn, _params) do
-    pid = Cache.server_process(@server)
-
-    conn
-    |> LiveView.Controller.live_render(PhxClientWeb.TodosLive.Index,
-      session: %{filter: :SHOW_COMPLETED, pid: pid}
-    )
-  end
 end

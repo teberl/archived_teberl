@@ -1,4 +1,4 @@
 <li key="<%= @filter %>">
-    <a href="<%= filter_path(@filter) %>" class="<%= if @active, do: "selected" %>" style="cursor:pointer">
+    <a href="<%= filter_path(@filter, @list_id) %>" class="<%= if @active, do: "selected" %>" style="cursor:pointer">
         <%= filter_title(@filter) %></a>
 </li>

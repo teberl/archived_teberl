@@ -12,9 +12,13 @@ defmodule PhxClientWeb.Router do
     plug(:put_layout, {PhxClientWeb.LayoutView, :app})
   end
 
-  pipeline :api do
-    plug(:accepts, ["json"])
+  pipeline :todos do
+    plug(:put_layout, {PhxClientWeb.LayoutView, :todos})
   end
+
+  # pipeline :api do
+  #   plug(:accepts, ["json"])
+  # end
 
   scope "/", PhxClientWeb do
     pipe_through(:browser)
@@ -24,9 +28,15 @@ defmodule PhxClientWeb.Router do
 
     live("/counter", CounterLive)
 
-    get("/todos", TodosController, :index)
-    get("/todos/active", TodosController, :active)
-    get("/todos/completed", TodosController, :completed)
+
+  end
+
+  scope "/todos", PhxClientWeb do
+    pipe_through(:browser)
+    pipe_through(:todos)
+
+    get("/:list_id", TodosController, :todo_list)
+    get("/", TodosController, :global_list)
   end
 
   # Other scopes may use custom stacks.

@@ -18,11 +18,14 @@ defmodule PhxClientWeb.TodosView do
       else: "<strong>#{active_count}</strong> #{items_text}"
   end
 
-  def filter_path(filter) do
-    case filter do
-      :SHOW_ALL -> Routes.todos_path(PhxClientWeb.Endpoint, :index)
-      :SHOW_ACTIVE -> Routes.todos_path(PhxClientWeb.Endpoint, :active)
-      :SHOW_COMPLETED -> Routes.todos_path(PhxClientWeb.Endpoint, :completed)
+  def filter_path(filter, list_id) do
+    filter_query = case filter do
+      :SHOW_ALL -> "all"
+      :SHOW_ACTIVE -> "active"
+      :SHOW_COMPLETED -> "completed"
+      _ -> "all"
     end
+
+    Routes.todos_url(PhxClientWeb.Endpoint, :todo_list, list_id, filter: filter_query)
   end
 end
